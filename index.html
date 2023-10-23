@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Demo</title>
+<meta charset = "UTF-8" />
+<script src="js/jquery.min.js"></script>
+ <script src="js/bootstrap.min.js"></script>
+<link href="css/bootstrap.min.css" rel="stylesheet" />
+<style>
+
+.radio_option
+{
+
+padding:5px;
+
+}
+
+</style>
+
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>QA - Quize App Using  The Trivia API</h1>
+         </div>
+         <div class="row">
+          <div class="col-md-10">
+            <form id='form'>
+                <label></label>
+                <textarea id='question' placeholder='location' class="form-control" cols="100px" rows="5px"></textarea><br/><br/>
+                <label id='opt' ></label>
+
+            </form>
+        </div>
+        <div class="col-md-2">
+
+          <span id="score" class>Score: 0</span>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+APP={};
+APP.score=0;
+APP.choice="";
+$(document).ready(function(){
+
+  doAjax();
+
+});
+
+
+function doAjax()
+{
+	$.ajax({
+	//url:'https://api.openweathermap.org/data/2.5/weather?id=524901&appid=2193e25191cdc18313848771754fd8d5',
+	url: 'https://the-trivia-api.com/v2/questions',
+	type:'GET',
+	success:function(result){
+
+
+					options={'_one':result[0].correctAnswer,'_two':result[0].incorrectAnswers[0],'_three':result[0].incorrectAnswers[1],'_four':result[0].incorrectAnswers[2]}
+					bttns={'_one':'btn btn-primary','_two':'btn btn-warning','_three':'btn btn-danger','_four':'btn btn-success'}
+
+
+				   for(var i in options){
+
+					        document.querySelector('#question').value=result[0].question.text;
+
+				            div=document.createElement('div');
+				            div.id='option';
+                            document.getElementById('opt').appendChild(div);
+							input=document.createElement('input');
+							label=document.createElement('label');
+							id=document.createAttribute('id');
+							id.value='opt';
+							label.setAttributeNode(id);
+
+							label.innerText=options[i];
+							input.value=options[i];
+							input.type='radio';
+							label.appendChild(input)
+
+
+							att=document.createAttribute('class');
+							nam=document.createAttribute('name');
+							nam.value='_one';
+							att.value='radio_option';
+							label.setAttributeNode(att);
+							input.setAttributeNode(nam);
+
+							input.addEventListener('click',function(){
+
+							APP.choice=this.value;
+
+
+
+
+
+							});
+							document.getElementById('option').appendChild(input);
+							document.getElementById('option').appendChild(label);
+							document.getElementById('option').appendChild(document.createElement('br'));
+							document.getElementById('option').appendChild(document.createElement('br'));
+
+
+					}
+						submit=document.createElement('submit');
+						submitatt=document.createAttribute('class');
+						submitatt.value="btn btn-primary";
+						submit.setAttributeNode(submitatt);
+						submit.appendChild(document.createTextNode('Next >>'));
+
+						submit.addEventListener('click',function(){
+                        document.getElementById('opt').removeChild(document.getElementById('option'));
+
+
+							if(APP.choice.toUpperCase()==result[0].correctAnswer.toUpperCase())
+							{
+
+							APP.score+=1;
+                            document.querySelector('span').innerHTML="Score: "+APP.score;
+
+							}
+						  doAjax();
+
+						});
+
+
+						document.getElementById('option').appendChild(submit);
+
+
+			 },
+	error: function(error){
+			console.log(error));
+			}
+
+
+
+	});
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+</script>
+</body>
+</html>
