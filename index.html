@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Demo</title>
+<title>QA</title>
 <meta charset = "UTF-8" />
+<meta name="keywords" content="quiz,game, api" />
 <script src="js/jquery.min.js"></script>
  <script src="js/bootstrap.min.js"></script>
 <link href="css/bootstrap.min.css" rel="stylesheet" />
@@ -12,8 +13,34 @@
 {
 
 padding:5px;
+font-size:15px;
+}
+
+#question{
+
+font-size:20px;
+font-family:Sans-serif;
+color:red;
+padding:10px;
+margin:0 auto;
+resize:none;
 
 }
+
+body{
+
+font-family:Tahoma;
+font-size:15px;
+}
+
+span{
+
+color:blue;
+font-weight:bold;
+font-size:20px;
+
+}
+
 
 </style>
 
@@ -46,12 +73,31 @@ padding:5px;
 APP={};
 APP.score=0;
 APP.choice="";
+
 $(document).ready(function(){
 
   doAjax();
 
 });
 
+
+function randomKey(obj)
+{
+
+ 	 key=Object.keys(obj);
+ 	if(APP.score%3==Math.floor(Math.random()*2))
+ 	{
+ 	  key=key.sort()
+ 	}else
+ 	{
+
+ 	if(APP.score%3==Math.floor(Math.random()*3))
+ 	 key=key.reverse()
+	}
+
+	return key
+
+}
 
 function doAjax()
 {
@@ -62,11 +108,12 @@ function doAjax()
 	success:function(result){
 
 
-					options={'_one':result[0].correctAnswer,'_two':result[0].incorrectAnswers[0],'_three':result[0].incorrectAnswers[1],'_four':result[0].incorrectAnswers[2]}
-					bttns={'_one':'btn btn-primary','_two':'btn btn-warning','_three':'btn btn-danger','_four':'btn btn-success'}
+					 options={'_one':result[0].correctAnswer,'_two':result[0].incorrectAnswers[0],'_three':result[0].incorrectAnswers[1],'_four':result[0].incorrectAnswers[2]};
 
+				     key=randomKey(options);
+				     console.log(key)
 
-				   for(var i in options){
+				   for(i=0;i<key.length;i++){
 
 					        document.querySelector('#question').value=result[0].question.text;
 
@@ -79,8 +126,8 @@ function doAjax()
 							id.value='opt';
 							label.setAttributeNode(id);
 
-							label.innerText=options[i];
-							input.value=options[i];
+							label.innerText=options[key[i]];
+							input.value=options[key[i]];
 							input.type='radio';
 							label.appendChild(input)
 
