@@ -8,7 +8,10 @@
  <script src="js/bootstrap.min.js"></script>
 <link href="css/bootstrap.min.css" rel="stylesheet" />
 <link href="css/custom.css" rel="stylesheet" />
+<style>
 
+
+</style>
 
 </head>
 <body>
@@ -16,8 +19,9 @@
     <div class="row">
         <div class="col-md-12">
             <h1>QA - Quize App Using  The Trivia API</h1>
-         </div>
+        </div>
          <div class="row">
+
           <div class="col-md-10">
             <form id='form'>
                 <label></label>
@@ -28,7 +32,7 @@
         </div>
         <div class="col-md-2">
 
-          <span id="score" class>Score: 0</span>
+          <span id="score" class></span>
 
         </div>
     </div>
@@ -42,7 +46,7 @@ APP.choice="";
 
 $(document).ready(function(){
 
-  doAjax();
+  doAjax('https://the-trivia-api.com/v2/questions');
 
 });
 
@@ -65,11 +69,10 @@ function randomKey(obj)
 
 }
 
-function doAjax()
+function doAjax(url)
 {
 	$.ajax({
-	//url:'https://api.openweathermap.org/data/2.5/weather?id=524901&appid=2193e25191cdc18313848771754fd8d5',
-	url: 'https://the-trivia-api.com/v2/questions',
+	url: url,
 	type:'GET',
 	success:function(result){
 
@@ -80,9 +83,10 @@ function doAjax()
 
 				   for(i=0;i<key.length;i++){
 
-					        document.querySelector('#question').value=result[0].question.text;
-					        document.querySelector('#question').disabled=true;
-					        document.querySelector('#question').style.backgroundColor="#fff";
+					        question=document.querySelector('#question')
+					        question.value=result[0].question.text;
+					        question.disabled=true;
+					        question.style.backgroundColor="#fff";
 
 
 				            div=document.createElement('div');
@@ -116,10 +120,11 @@ function doAjax()
 
 
 							});
-							document.getElementById('option').appendChild(input);
-							document.getElementById('option').appendChild(label);
-							document.getElementById('option').appendChild(document.createElement('br'));
-							document.getElementById('option').appendChild(document.createElement('br'));
+							option=document.getElementById('option');
+							option.appendChild(input);
+							option.appendChild(label);
+							option.appendChild(document.createElement('br'));
+							option.appendChild(document.createElement('br'));
 
 
 					}
@@ -130,7 +135,7 @@ function doAjax()
 						submit.appendChild(document.createTextNode('Next >>'));
 
 						submit.addEventListener('click',function(){
-                        document.getElementById('opt').removeChild(document.getElementById('option'));
+                        document.getElementById('opt').removeChild(option);
 
 
 							if(APP.choice.toUpperCase()==result[0].correctAnswer.toUpperCase())
@@ -140,12 +145,16 @@ function doAjax()
                             document.querySelector('span').innerHTML="Score: "+APP.score;
 
 							}
-						  doAjax();
+						  doAjax('https://the-trivia-api.com/v2/questions');
 
 						});
 
 
-						document.getElementById('option').appendChild(submit);
+						option.appendChild(submit);
+
+
+
+
 
 
 			 },
@@ -167,6 +176,7 @@ function doAjax()
 
 
 }
+
 
 
 
