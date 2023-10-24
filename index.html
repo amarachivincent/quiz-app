@@ -25,14 +25,13 @@
           <div class="col-md-10">
             <form id='form'>
                 <label></label>
-                <textarea id='question' placeholder='location' class="form-control" cols="100px" rows="5px"></textarea><br/><br/>
                 <label id='opt' ></label>
 
             </form>
         </div>
         <div class="col-md-2">
 
-          <span id="score" class></span>
+         <span id="score" class></span>
 
         </div>
     </div>
@@ -81,12 +80,30 @@ function doAjax(url)
 
 				     key=randomKey(options);
 
-				   for(i=0;i<key.length;i++){
+				            tarea=document.createElement('textarea');
+							fctr=document.createAttribute('class');
+							fctr.value="form-control";
+							rows=document.createAttribute('rows');
+							cols=document.createAttribute('cols');
+							cols.value="100px";
+							rows.value="5px";
+							tarea.setAttributeNode(fctr);
+							tarea.setAttributeNode(rows);
+                            tarea.setAttributeNode(cols);
 
+				            form=document.getElementById('form');
+				            tarea.id="question";
+							form.insertBefore(tarea,document.getElementById('opt'));
+							form.appendChild(document.createElement('br'));
+							form.appendChild(document.createElement('br'));
 					        question=document.querySelector('#question')
 					        question.value=result[0].question.text;
 					        question.disabled=true;
 					        question.style.backgroundColor="#fff";
+
+
+				   for(i=0;i<key.length;i++){
+
 
 
 				            div=document.createElement('div');
@@ -105,19 +122,20 @@ function doAjax(url)
 
 
 							att=document.createAttribute('class');
+
 							nam=document.createAttribute('name');
+
 							nam.value='_one';
 							att.value='radio_option';
+
 							label.setAttributeNode(att);
 							input.setAttributeNode(nam);
+
+
 
 							input.addEventListener('click',function(){
 
 							APP.choice=this.value;
-
-
-
-
 
 							});
 							option=document.getElementById('option');
@@ -134,17 +152,28 @@ function doAjax(url)
 						submit.setAttributeNode(submitatt);
 						submit.appendChild(document.createTextNode('Next >>'));
 
+        				span=document.createElement('span');
+						span.id='span';
+						span.appendChild(document.createTextNode("Score: "+APP.score));
+                        score=document.getElementById('score')
+                        score.appendChild(span);
+
 						submit.addEventListener('click',function(){
+
+						form.removeChild(tarea);
+                        score.removeChild(document.getElementById('span'));
                         document.getElementById('opt').removeChild(option);
+
 
 
 							if(APP.choice.toUpperCase()==result[0].correctAnswer.toUpperCase())
 							{
 
 							APP.score+=1;
-                            document.querySelector('span').innerHTML="Score: "+APP.score;
 
 							}
+
+
 						  doAjax('https://the-trivia-api.com/v2/questions');
 
 						});
