@@ -18,30 +18,33 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>QA - Quize App Using  The Trivia API</h1>
+            <h1>QA - Quiz App Using  The Trivia API</h1>
         </div>
-         <div class="row">
+    </div>
+    <div class="row">
 
           <div class="col-md-10">
             <form id='form'>
                 <label></label>
-                <label id='opt' ></label>
+                <label id='options' ></label>
 
             </form>
         </div>
         <div class="col-md-2">
 
-         <span id="score" class></span>
+         <span id="score"></span>
 
         </div>
     </div>
 </div>
 
 
+
 <script>
-APP={};
+let APP={};
 APP.score=0;
-APP.choice="";
+APP.choice=0;
+
 
 $(document).ready(function(){
 
@@ -76,9 +79,9 @@ function doAjax(url)
 	success:function(result){
 
 
-					 options={'_one':result[0].correctAnswer,'_two':result[0].incorrectAnswers[0],'_three':result[0].incorrectAnswers[1],'_four':result[0].incorrectAnswers[2]};
+					 query_options={'_one':result[0].correctAnswer,'_two':result[0].incorrectAnswers[0],'_three':result[0].incorrectAnswers[1],'_four':result[0].incorrectAnswers[2]};
 
-				     key=randomKey(options);
+				     key=randomKey(query_options);
 
 				            tarea=document.createElement('textarea');
 							fctr=document.createAttribute('class');
@@ -93,7 +96,7 @@ function doAjax(url)
 
 				            form=document.getElementById('form');
 				            tarea.id="question";
-							form.insertBefore(tarea,document.getElementById('opt'));
+							form.insertBefore(tarea,document.getElementById('options'));
 							form.appendChild(document.createElement('br'));
 							form.appendChild(document.createElement('br'));
 					        question=document.querySelector('#question')
@@ -101,24 +104,19 @@ function doAjax(url)
 					        question.disabled=true;
 					        question.style.backgroundColor="#fff";
 
+				            div=document.createElement('div');
+				            div.id='option';
+                            document.getElementById('options').appendChild(div);
 
 				   for(i=0;i<key.length;i++){
 
 
 
-				            div=document.createElement('div');
-				            div.id='option';
-                            document.getElementById('opt').appendChild(div);
 							input=document.createElement('input');
 							label=document.createElement('label');
-							id=document.createAttribute('id');
-							id.value='opt';
-							label.setAttributeNode(id);
-
-							label.innerText=options[key[i]];
-							input.value=options[key[i]];
+							label.innerText=query_options[key[i]];
+							input.value=query_options[key[i]];
 							input.type='radio';
-							label.appendChild(input)
 
 
 							att=document.createAttribute('class');
@@ -128,8 +126,8 @@ function doAjax(url)
 							nam.value='_one';
 							att.value='radio_option';
 
-							label.setAttributeNode(att);
-							input.setAttributeNode(nam);
+							 label.setAttributeNode(att);
+							 input.setAttributeNode(nam);
 
 
 
@@ -140,7 +138,7 @@ function doAjax(url)
 							});
 							option=document.getElementById('option');
 							option.appendChild(input);
-							option.appendChild(label);
+				         	option.appendChild(label);
 							option.appendChild(document.createElement('br'));
 							option.appendChild(document.createElement('br'));
 
@@ -162,7 +160,7 @@ function doAjax(url)
 
 						form.removeChild(tarea);
                         score.removeChild(document.getElementById('span'));
-                        document.getElementById('opt').removeChild(option);
+                        document.getElementById('options').removeChild(option);
 
 
 
