@@ -18,19 +18,19 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>QA - Quiz App Using  The Trivia API</h1>
+            <h2>QA - Quiz App Using  The Trivia API</h2>
         </div>
     </div>
     <div class="row">
 
-          <div class="col-md-10">
+          <div class="col-md-8">
             <form id='form'>
                 <label></label>
                 <label id='options' ></label>
 
             </form>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-4">
 
          <span id="score"></span>
 
@@ -43,7 +43,7 @@
 <script>
 let APP={};
 APP.score=0;
-APP.choice=0;
+APP.choice='';
 
 
 $(document).ready(function(){
@@ -87,19 +87,16 @@ function doAjax(url)
 							fctr=document.createAttribute('class');
 							fctr.value="form-control";
 							rows=document.createAttribute('rows');
-							cols=document.createAttribute('cols');
-							cols.value="100px";
-							rows.value="5px";
+							rows.value="4";
 							tarea.setAttributeNode(fctr);
 							tarea.setAttributeNode(rows);
-                            tarea.setAttributeNode(cols);
-
 				            form=document.getElementById('form');
 				            tarea.id="question";
 							form.insertBefore(tarea,document.getElementById('options'));
 							form.appendChild(document.createElement('br'));
 							form.appendChild(document.createElement('br'));
-					        question=document.querySelector('#question')
+					        question=document.querySelector('#question');
+
 					        question.value=result[0].question.text;
 					        question.disabled=true;
 					        question.style.backgroundColor="#fff";
@@ -140,15 +137,15 @@ function doAjax(url)
 							option.appendChild(input);
 				         	option.appendChild(label);
 							option.appendChild(document.createElement('br'));
-							option.appendChild(document.createElement('br'));
+
 
 
 					}
 						submit=document.createElement('submit');
 						submitatt=document.createAttribute('class');
-						submitatt.value="btn btn-primary";
+						submitatt.value="bttn";
 						submit.setAttributeNode(submitatt);
-						submit.appendChild(document.createTextNode('Next >>'));
+						submit.appendChild(document.createTextNode('Next>>'));
 
         				span=document.createElement('span');
 						span.id='span';
@@ -175,7 +172,6 @@ function doAjax(url)
 						  doAjax('https://the-trivia-api.com/v2/questions');
 
 						});
-
 
 						option.appendChild(submit);
 
